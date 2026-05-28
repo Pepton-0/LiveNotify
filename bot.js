@@ -52,6 +52,8 @@ const {
     YTSTATECHANNEL_ID,
     YOUTUBERS,
     TIME_DIFF_FROM_UST,
+    ACTIVE_START_HOUR,
+    ACTIVE_END_HOUR
 } = env;
 
 if (!DISCORD_TOKEN) throw new Error('env.json に DISCORD_TOKEN がありません');
