@@ -4,29 +4,6 @@ import fs from 'node:fs/promises';
 import { Client, GatewayIntentBits } from 'discord.js';
 import { XMLParser } from 'fast-xml-parser';
 
-const YOUTUBERS = [
-    'https://www.youtube.com/@赤上優火-akagamiyuuka',
-    'https://www.youtube.com/@tsuyukusa_v',
-    'https://www.youtube.com/@umeshiba1216',
-    'http://youtube.com/@bodomko',
-    'https://www.youtube.com/@toka_petalburg',
-    'https://www.youtube.com/@Nanakusagayu793',
-    'https://www.youtube.com/@deshi3463',
-    'https://www.youtube.com/@kotenkoya8993',
-    'https://www.youtube.com/@nekomiya_omochi',
-    'https://www.youtube.com/@Ita-chan/videos',
-    'https://www.youtube.com/@ChiyuHatsuka',
-    'https://www.youtube.com/@Bowbow_garcia',
-    'https://www.youtube.com/@Ken-suzume',
-    'https://www.youtube.com/@朝比奈かえで',
-    'https://www.youtube.com/@冰鉄雪',
-    'https://www.youtube.com/@れくせる-RexL',
-    'https://www.youtube.com/@高田鷹ch',
-    'https://www.youtube.com/@雑魚代表ときしく',
-    'https://www.youtube.com/@sakuraha_yayoi',
-    'https://www.youtube.com/@彼誰ろろろ'
-];
-
 // 通知対象にするライブタイトル条件。
 // 英字は大文字小文字を無視して判定する。
 const LIVE_TITLE_KEYWORDS = [
@@ -72,7 +49,9 @@ const {
     YOUTUBE_API_KEY,
     GUILD_ID,
     NOTIFYCHANNEL_ID,
-    YTSTATECHANNEL_ID
+    YTSTATECHANNEL_ID,
+    YOUTUBERS,
+    TIME_DIFF_FROM_UST,
 } = env;
 
 if (!DISCORD_TOKEN) throw new Error('env.json に DISCORD_TOKEN がありません');
@@ -126,7 +105,7 @@ function getJstTimeString() {
     const now = new Date();
 
     // JST = UTC + 9
-    const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+    const jst = new Date(now.getTime() + TIME_DIFF_FROM_UST * 60 * 60 * 1000);
 
     const hh = String(jst.getUTCHours()).padStart(2, '0');
     const mm = String(jst.getUTCMinutes()).padStart(2, '0');
@@ -901,7 +880,7 @@ client.once('ready', async () => {
         throw err;
     }
 
-    // セットアップが終わってから初回確認。
+    // discordにすでに投稿した動画の読み込みが終わってから初回確認。
     await checkLivesOnce();
 
     // 以後、定期確認。
