@@ -4,14 +4,6 @@ import fs from 'node:fs/promises';
 import { Client, GatewayIntentBits } from 'discord.js';
 import { XMLParser } from 'fast-xml-parser';
 
-// 通知対象にするライブタイトル条件。
-// 英字は大文字小文字を無視して判定する。
-const LIVE_TITLE_KEYWORDS = [
-    'ARMORED CORE',
-    'AC',
-    'アーマードコア'
-];
-
 // RSS確認頻度。
 const CHECK_INTERVAL_MS = 10 * 60 * 1000;
 
@@ -53,7 +45,8 @@ const {
     YOUTUBERS,
     TIME_DIFF_FROM_UST,
     ACTIVE_START_HOUR,
-    ACTIVE_END_HOUR
+    ACTIVE_END_HOUR,
+    LIVE_TITLE_KEYWORDS
 } = env;
 
 if (!DISCORD_TOKEN) throw new Error('env.json に DISCORD_TOKEN がありません');
